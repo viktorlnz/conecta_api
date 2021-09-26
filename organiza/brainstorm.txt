@@ -1,0 +1,32 @@
+fazer os exercícios e resolução
+
+
+
+dashboard
+
+sistema de cadastro:
+Cadastro de usuário:
+    - Alunos;
+    - Professores;
+    - Instituições
+    - Turmas;
+    - Matérias;
+
+Exercícios
+    -Registrar
+        - Alternativa ou dissertativa ou cálculo
+        - Prova ou exercício comum ou trabalho
+        - Colocar data de entrega do exercício
+    -Registros de resoluções
+        - Texto da resposta
+        - Colocar resolução
+    - Correção
+        - Verificação de colas (verificar respostas iguais dos alunos)
+        - campo sem ctrl + c e ctrl + v 
+        - Sistema de correção (certo, meio certo e errado)
+        - feedback opcional para o aluno
+
+Dinamicidade entre armazenamento local e online
+    - Exercícios da turma
+    - Exercícios do professor
+    - Dados da turma que o aluno tá matriculado
