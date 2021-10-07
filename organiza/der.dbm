@@ -3,14 +3,14 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.1-beta" last-position="0,0" last-zoom="0.6"
+<dbmodel pgmodeler-ver="0.9.1-beta" last-position="721,0" last-zoom="0.85"
 	 default-schema="public" default-owner="postgres">
 <database name="conecta" encoding="UTF8" lc-collate="en_US.UTF-8" lc-ctype="en_US.UTF-8">
 	<role name="postgres"/>
 	<tablespace name="pg_default"/>
 </database>
 
-<schema name="public" rect-visible="true" fill-color="#e1e1e1" sql-disabled="true">
+<schema name="public" fill-color="#e1e1e1" sql-disabled="true">
 </schema>
 
 <sequence name="instituicao_id_seq"
@@ -24,7 +24,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="instituicao">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="20" y="160"/>
+	<position x="60" y="60"/>
 	<column name="id" not-null="true" sequence="public.instituicao_id_seq">
 		<type name="integer" length="0"/>
 	</column>
@@ -60,7 +60,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="professor">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="40" y="0"/>
+	<position x="620" y="340"/>
 	<column name="id" not-null="true" sequence="public.professor_id_seq">
 		<type name="integer" length="0"/>
 	</column>
@@ -72,6 +72,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="id_usuario" not-null="true">
 		<type name="bigint" length="0"/>
+	</column>
+	<column name="identificacao" not-null="true">
+		<type name="character varying" length="30"/>
 	</column>
 	<constraint name="professor_pk" type="pk-constr" table="public.professor">
 		<columns names="id" ref-type="src-columns"/>
@@ -89,7 +92,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="aluno">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="820" y="0"/>
+	<position x="660" y="580"/>
 	<column name="id" not-null="true" sequence="public.aluno_id_seq">
 		<type name="integer" length="0"/>
 	</column>
@@ -125,7 +128,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="materia">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="640" y="180"/>
+	<position x="720" y="840"/>
 	<column name="id" not-null="true" sequence="public.materia_id_seq">
 		<type name="integer" length="0"/>
 	</column>
@@ -157,7 +160,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="materia_turma">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1100" y="200"/>
+	<position x="1480" y="1320"/>
 	<column name="id" not-null="true" sequence="public.materia_turma_id_seq">
 		<type name="bigint" length="0"/>
 	</column>
@@ -183,7 +186,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="turma">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="60" y="440"/>
+	<position x="760" y="1020"/>
 	<column name="id" not-null="true" sequence="public.turma_id_seq">
 		<type name="integer" length="0"/>
 	</column>
@@ -216,7 +219,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="aluno_turma">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="440" y="420"/>
+	<position x="1340" y="740"/>
 	<column name="id_turma">
 		<type name="integer" length="0"/>
 	</column>
@@ -229,7 +232,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="public"/>
 	<role name="postgres"/>
 	<comment><![CDATA[Caso a matéria seja lecionada por mais de um professor]]></comment>
-	<position x="760" y="420"/>
+	<position x="1240" y="340"/>
 	<column name="id_professor" not-null="true">
 		<type name="integer" length="0"/>
 	</column>
@@ -238,28 +241,235 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 </table>
 
+<sequence name="usuario_id_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<usertype name="categoria_usuario" configuration="enumeration">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[ALUNO, PROFESSOR ou INSTITUICAO]]></comment>
+	<enumeration values="ALUNO,PROFESSOR,INSTITUICAO"/>
+</usertype>
+
 <table name="usuario">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="480" y="0"/>
-	<column name="id" not-null="true">
-		<type name="bigserial" length="0"/>
+	<position x="560" y="120"/>
+	<column name="id" not-null="true" sequence="public.usuario_id_seq">
+		<type name="bigint" length="0"/>
 	</column>
 	<column name="usuario" not-null="true">
-		<type name="varchar" length="50"/>
+		<type name="character varying" length="50"/>
 	</column>
 	<column name="email" not-null="true">
-		<type name="varchar" length="60"/>
+		<type name="character varying" length="60"/>
 	</column>
 	<column name="senha" not-null="true">
-		<type name="varchar" length="255"/>
+		<type name="character varying" length="255"/>
 	</column>
 	<column name="dt_registro" default-value="CURRENT_DATE">
 		<type name="date" length="0"/>
 	</column>
+	<column name="categoria_usuario" not-null="true">
+		<type name="public.categoria_usuario" length="0"/>
+	</column>
 	<constraint name="usuario_pk" type="pk-constr" table="public.usuario">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
+</table>
+
+<sequence name="login_id_seq"
+	 start="1" increment="1"
+	 min-value="1" max-value="9223372036854775807"
+	 cache="1" cycle="false">
+	<schema name="public"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="login">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1180" y="120"/>
+	<column name="id" not-null="true" sequence="public.login_id_seq">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_usuario" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="dt_acesso" default-value="CURRENT_TIMESTAMP">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="ip" not-null="true">
+		<type name="character varying" length="255"/>
+	</column>
+	<constraint name="login_pk" type="pk-constr" table="public.login">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<usertype name="exercicio_categoria" configuration="enumeration">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<enumeration values="ALTERNATIVA,DISSERTATIVA,CALCULO"/>
+</usertype>
+
+<table name="tarefa">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="2020" y="520"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_materia_turma" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="titulo" not-null="true">
+		<type name="varchar" length="255"/>
+	</column>
+	<column name="desc">
+		<type name="text" length="0"/>
+	</column>
+	<column name="pontos" not-null="true">
+		<type name="numeric" length="5" precision="2"/>
+		<comment><![CDATA[total de pontos que a tarefa vale]]></comment>
+	</column>
+	<column name="dt_registro" default-value="CURRENT_DATE">
+		<type name="date" length="0"/>
+	</column>
+	<column name="dt_comeco" default-value="CURRENT_TIMESTAMP">
+		<type name="timestamp" length="0"/>
+		<comment><![CDATA[Data e hora de início da atividade]]></comment>
+	</column>
+	<column name="dt_fim">
+		<type name="timestamp" length="0"/>
+		<comment><![CDATA[Data e hora final de entrega da tarefa]]></comment>
+	</column>
+	<constraint name="tarefa_pk" type="pk-constr" table="public.tarefa">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="exercicio_tarefa">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1920" y="120"/>
+	<column name="id_exercicio" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_tarefa" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="numerador" not-null="true">
+		<type name="smallint" length="0"/>
+		<comment><![CDATA[Numera em qual posição esse exercício está na tarefa]]></comment>
+	</column>
+	<column name="pontos" not-null="true">
+		<type name="numeric" length="7" precision="2"/>
+		<comment><![CDATA[pontuação do exercício em peso diante da pontuação da tarefa]]></comment>
+	</column>
+</table>
+
+<table name="exercicio">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1280" y="500"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_professor" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_materia">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="desc" not-null="true">
+		<type name="text" length="0"/>
+		<comment><![CDATA[Descrição do exercício]]></comment>
+	</column>
+	<column name="categoria" default-value="&quot;DISSERTATIVA&quot;">
+		<type name="public.exercicio_categoria" length="0"/>
+	</column>
+	<constraint name="exercicio_pk" type="pk-constr" table="public.exercicio">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="tarefa_submissao">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1380" y="920"/>
+	<column name="id" not-null="true">
+		<type name="bigserial" length="0"/>
+	</column>
+	<column name="id_aluno" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="id_tarefa" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="dt_inicio" default-value="CURRENT_TIMESTAMP">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="dt_submissao">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="tarefa_submissao_pk" type="pk-constr" table="public.tarefa_submissao">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<usertype name="correcao" configuration="enumeration">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[CORRETO, SEMI_CORRETO, ERRADO]]></comment>
+	<enumeration values="CORRETO,SEMI_CORRETO,ERRADO"/>
+</usertype>
+
+<table name="exercicio_submissao">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1960" y="340"/>
+	<column name="id_exercicio" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="id_tarefa_submissao" not-null="true">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="correcao">
+		<type name="public.correcao" length="0"/>
+	</column>
+</table>
+
+<table name="experiencia">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1440" y="1160"/>
+	<column name="id_aluno" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="pontos" default-value="0">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="experiencia_pk" type="pk-constr" table="public.experiencia">
+		<columns names="id_aluno" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="experiencia_nivel">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1920" y="1240"/>
+	<column name="nivel" not-null="true">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="experiencia_requerida" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
 </table>
 
 <constraint name="usuario_fk" type="fk-constr" comparison-type="MATCH FULL"
@@ -340,79 +550,204 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
+<constraint name="usuario_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.usuario" table="public.login">
+	<columns names="id_usuario" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="materia_turma_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.materia_turma" table="public.tarefa">
+	<columns names="id_materia_turma" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="exercicio_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.exercicio" table="public.exercicio_tarefa">
+	<columns names="id_exercicio" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="tarefa_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tarefa" table="public.exercicio_tarefa">
+	<columns names="id_tarefa" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="professor_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.professor" table="public.exercicio">
+	<columns names="id_professor" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="materia_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.materia" table="public.exercicio">
+	<columns names="id_materia" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="aluno_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.aluno" table="public.tarefa_submissao">
+	<columns names="id_aluno" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="tarefa_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tarefa" table="public.tarefa_submissao">
+	<columns names="id_tarefa" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="exercicio_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.exercicio" table="public.exercicio_submissao">
+	<columns names="id_exercicio" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="tarefa_submissao_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.tarefa_submissao" table="public.exercicio_submissao">
+	<columns names="id_tarefa_submissao" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="aluno_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.aluno" table="public.experiencia">
+	<columns names="id_aluno" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_instituicao_usuario" type="relfk"
+	 custom-color="#e05f02"
+	 src-table="public.instituicao"
+	 dst-table="public.usuario"
+	 src-required="false" dst-required="false"/>
+
 <relationship name="rel_professor_instituicao" type="relfk"
-	 custom-color="#d45dbd"
+	 custom-color="#998754"
 	 src-table="public.professor"
 	 dst-table="public.instituicao"
 	 src-required="false" dst-required="false"/>
 
+<relationship name="rel_professor_usuario" type="relfk"
+	 custom-color="#d199c5"
+	 src-table="public.professor"
+	 dst-table="public.usuario"
+	 src-required="false" dst-required="false"/>
+
 <relationship name="rel_aluno_instituicao" type="relfk"
-	 custom-color="#247131"
+	 custom-color="#011f43"
 	 src-table="public.aluno"
 	 dst-table="public.instituicao"
 	 src-required="false" dst-required="false"/>
 
+<relationship name="rel_aluno_usuario" type="relfk"
+	 custom-color="#e119b5"
+	 src-table="public.aluno"
+	 dst-table="public.usuario"
+	 src-required="false" dst-required="false"/>
+
 <relationship name="rel_materia_instituicao" type="relfk"
-	 custom-color="#8c3659"
+	 custom-color="#a6801c"
 	 src-table="public.materia"
 	 dst-table="public.instituicao"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_materia_turma_turma" type="relfk"
-	 custom-color="#246061"
+	 custom-color="#5ba9ac"
 	 src-table="public.materia_turma"
 	 dst-table="public.turma"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_materia_turma_materia" type="relfk"
-	 custom-color="#d04cbc"
+	 custom-color="#6d9d0f"
 	 src-table="public.materia_turma"
 	 dst-table="public.materia"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_turma_instituicao" type="relfk"
-	 custom-color="#b04404"
+	 custom-color="#959933"
 	 src-table="public.turma"
 	 dst-table="public.instituicao"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_aluno_turma_aluno" type="relfk"
-	 custom-color="#221890"
+	 custom-color="#bd946a"
 	 src-table="public.aluno_turma"
 	 dst-table="public.aluno"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_aluno_turma_turma" type="relfk"
-	 custom-color="#e35944"
+	 custom-color="#5fece8"
 	 src-table="public.aluno_turma"
 	 dst-table="public.turma"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_professor_materia_turma_professor" type="relfk"
-	 custom-color="#c0ca3c"
+	 custom-color="#6b0689"
 	 src-table="public.professor_materia_turma"
 	 dst-table="public.professor"
 	 src-required="false" dst-required="false"/>
 
 <relationship name="rel_professor_materia_turma_materia_turma" type="relfk"
-	 custom-color="#b3e17b"
+	 custom-color="#eaea28"
 	 src-table="public.professor_materia_turma"
 	 dst-table="public.materia_turma"
 	 src-required="false" dst-required="false"/>
 
-<relationship name="rel_instituicao_usuario" type="relfk"
-	 src-table="public.instituicao"
+<relationship name="rel_login_usuario" type="relfk"
+	 custom-color="#c11d15"
+	 src-table="public.login"
 	 dst-table="public.usuario"
 	 src-required="false" dst-required="false"/>
 
-<relationship name="rel_professor_usuario" type="relfk"
-	 src-table="public.professor"
-	 dst-table="public.usuario"
+<relationship name="rel_exercicio_professor" type="relfk"
+	 src-table="public.exercicio"
+	 dst-table="public.professor"
 	 src-required="false" dst-required="false"/>
 
-<relationship name="rel_aluno_usuario" type="relfk"
-	 src-table="public.aluno"
-	 dst-table="public.usuario"
+<relationship name="rel_exercicio_materia" type="relfk"
+	 src-table="public.exercicio"
+	 dst-table="public.materia"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tarefa_materia_turma" type="relfk"
+	 src-table="public.tarefa"
+	 dst-table="public.materia_turma"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_exercicio_tarefa_exercicio" type="relfk"
+	 src-table="public.exercicio_tarefa"
+	 dst-table="public.exercicio"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_exercicio_tarefa_tarefa" type="relfk"
+	 src-table="public.exercicio_tarefa"
+	 dst-table="public.tarefa"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tarefa_submissao_aluno" type="relfk"
+	 src-table="public.tarefa_submissao"
+	 dst-table="public.aluno"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_tarefa_submissao_tarefa" type="relfk"
+	 src-table="public.tarefa_submissao"
+	 dst-table="public.tarefa"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_exercicio_submissao_exercicio" type="relfk"
+	 src-table="public.exercicio_submissao"
+	 dst-table="public.exercicio"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_exercicio_submissao_tarefa_submissao" type="relfk"
+	 src-table="public.exercicio_submissao"
+	 dst-table="public.tarefa_submissao"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_experiencia_aluno" type="relfk"
+	 src-table="public.experiencia"
+	 dst-table="public.aluno"
 	 src-required="false" dst-required="false"/>
 
 </dbmodel>
