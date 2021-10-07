@@ -19,9 +19,9 @@ class Usuario extends Controller{
             $args['senha']
         );
 
-        $logged = $usuario->login();
+        $token = $usuario->login();
 
-        $res->getBody()->write( json_encode( $logged ));
+        $res->getBody()->write( json_encode( $token ));
 
         return $res->withHeader('Content-type', 'application/json');
     }
@@ -38,9 +38,13 @@ class Usuario extends Controller{
     }
 
     public function checkLogin(Req $req, Res $res){
+        $args = $this->getArgs($req);
+
+        $token = $args['token'];
+
         $usuario = new Model();
 
-        $res->getBody()->write( json_encode( $usuario->checkLogin() ));
+        $res->getBody()->write( json_encode( $usuario->checkLogin($token) ));
 
         return $res->withHeader('Content-type', 'application/json');
     }

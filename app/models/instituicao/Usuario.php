@@ -28,14 +28,17 @@ class Usuario{
         )[0];
 
         if (Password::verify($this->senha, $usuario['senha'])) {
-            $idLogin = 0;
+            
+            // bin2hex(random_bytes($length))
+            $token = bin2hex(random_bytes(64));
             
             try {
-                $idLogin = $dao->insert(
+                $dao->insert(
                     'login',
                     [
                         'id_usuario' => $usuario['id'],
-                        'ip' => $this->getClientIp()
+                        'ip' => $this->getClientIp(),
+                        'token' => $token
                     ]
                 );
 
@@ -44,11 +47,10 @@ class Usuario{
             }
 
             $_SESSION['idUsuario'] = $usuario['id'];
-            $_SESSION['id'] = $idLogin;
             $_SESSION['categoria'] = $usuario['categoria_usuario'];
             $_SESSION['usuario'] = $usuario['usuario'];
         
-            return $usuario;
+            return $token;
         }
 
         else{
@@ -60,19 +62,24 @@ class Usuario{
         $_SESSION = array();
     }
 
-    public function checkLogin(){
+    public function checkLogin(string $token){
         $ip = $this->getClientIp();
 
         $dao = new Dao();
+        
 
         $ipLogin = $dao->get(
             'login',
             ['id' => ['compare' => '=', 'value' => $_SESSION['id'] ] ],
-            ['ip']
+            ['ip', 'token']
         )[0];
 
-        if ($ip == $ipLogin['ip']) {
-            return true;
+        if ($ip === $ipLogin['ip'] && $token === $ipLogin['token']) {
+            return [
+                'id' => $_SESSION['idUsuario'],
+                'categoria' => $_SESSION['categoria'],
+                'usuario' => $_SESSION['usuario']
+            ];
         }
         else{
             return false;
