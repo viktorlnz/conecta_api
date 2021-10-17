@@ -21,6 +21,7 @@ class InstituicaoRoutes{
         $group->group('/professor', function(RouteCollectorProxy $group){
             $group->post('', Professor::class . ':create');
             $group->get('', Professor::class . ':list');
+            $group->options('', Professor::class . ':options');
         });
 
         $group->group('/aluno', function(RouteCollectorProxy $group){
@@ -40,6 +41,7 @@ class InstituicaoRoutes{
 
         //ROTAS DE AUTENTICAÇÃO
         $group->post('/login', Usuario::class . ':login');
+        $group->options('/login', Usuario::class . ':options');
         $group->post('/logoff', Usuario::class . ':logoff');
         $group->get('/check_login', Usuario::class . ':checkLogin');
     }

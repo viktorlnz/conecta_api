@@ -4,13 +4,14 @@ namespace app\controllers\instituicao;
 
 use app\controllers\Controller;
 use app\models\instituicao\Usuario as Model;
-use Psr\Http\Message\RequestInterface as Req;
+use Psr\Http\Message\ServerRequestInterface as Req;
 use Psr\Http\Message\ResponseInterface as Res;
 
 class Usuario extends Controller{
 
     public function login(Req $req, Res $res){
-        $args = $this->getArgs($req);
+
+        $args = $req->getParsedBody();
 
         $usuario = new Model(
             0,
@@ -19,9 +20,9 @@ class Usuario extends Controller{
             $args['senha']
         );
 
-        $token = $usuario->login();
+        $usu = $usuario->login();
 
-        $res->getBody()->write( json_encode( $token ));
+        $res->getBody()->write( json_encode( $usu ));
 
         return $res->withHeader('Content-type', 'application/json');
     }

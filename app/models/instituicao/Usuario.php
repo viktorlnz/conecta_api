@@ -50,11 +50,17 @@ class Usuario{
             $_SESSION['categoria'] = $usuario['categoria_usuario'];
             $_SESSION['usuario'] = $usuario['usuario'];
         
-            return $token;
+            return [
+                'token' => $token,
+                'usuario' => $usuario['usuario'],
+                'categoria' => $usuario['categoria_usuario']
+            ];
         }
 
         else{
-            return false;
+            return [
+                'error' => 'Login ou senha não conferem!'
+            ];
         }
     }
 
