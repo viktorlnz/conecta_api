@@ -16,6 +16,7 @@ class InstituicaoRoutes{
         $group->group('/instituicao', function(RouteCollectorProxy $group){
             $group->post('', Instituicao::class . ':create');
             $group->get('', Instituicao::class . ':list');
+            $group->options('', Instituicao::class . ':options');
         });
 
         $group->group('/professor', function(RouteCollectorProxy $group){
