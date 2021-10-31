@@ -110,16 +110,21 @@ class Dao{
         return $retorno;
     }
 
-    private function mountSelectColumns(array $columns, bool $join = false):string{
+    private function mountSelectColumns(array $columns):string{
         $sql = '';
         $rows = [];
 
         foreach ($columns as $key => $column) {
             if(is_array($column)){
-                $sql .= $this->mountSelectColumns($column, true);
+
+                foreach ($column as $c) {
+                    $str = $key . '.' . $c['column'] . (isset($c['as']) ? ' AS '.$c['as'] : '');
+                    array_push($rows, $str);
+                }
+                
             }
             else{
-                array_push($rows, $join ? $key.'.'.$column : $column);
+                array_push($rows, $column);
             }
         }
 
@@ -134,23 +139,23 @@ class Dao{
         $sql = '';
         $joins = [];
 
-        foreach ($columns as $key => $column) {
-            if(!is_array($column)){
+        foreach ($columns as $key => $c) {
+            
+            if(!is_array($c)){
                 return '';
             }
 
             elseif ($key === $table) {
                 continue;
             }
-
             else{
-                array_push($joins, 
-                    ( is_null(  $column['join']) ? 'JOIN' : $column['join'] ) 
-                    .' '.$column['column']. ' ON '
-                    .( is_null($column['from']) ? $table : $column['from'] ). '.id'
-                    .' = '
-                    . $column['column']. '.id'
-                );
+                $column = $c[0];
+              
+                $str = ' ' . ( isset($column['join']) ? $column['join'] : 'JOIN' ) . ' ' . $key .
+                ' ON ' . ( isset($column['from']) ? $column['from'] : $table) . '.id = '.
+                $key . '.' . $column['column'];
+
+                array_push($joins, $str);
             }
         }
 
@@ -165,7 +170,7 @@ class Dao{
         $sql = ' WHERE ';
 
         foreach ($wheres as $key => $where) {
-            $sql .= ' '. $key . ' '.$where['compare'].' :v'.$key.' '. $where['next'] ?? '';
+            $sql .= ' '. (isset($where['table']) ? $where['table'] . '.' . $key : $key) . ' '.$where['compare'].' :v'.$key.' '. $where['next'] ?? '';
         }
 
         return $sql;

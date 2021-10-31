@@ -28,22 +28,27 @@ class InstituicaoRoutes{
         $group->group('/aluno', function(RouteCollectorProxy $group){
             $group->post('', Aluno::class . ':create');
             $group->get('', Aluno::class . ':list');
+            $group->options('', Aluno::class . ':options');
         });
 
         $group->group('/materia', function(RouteCollectorProxy $group){
             $group->post('', Materia::class . ':create');
             $group->get('', Materia::class . ':list');
+            $group->options('', Materia::class . ':options');
         });
 
         $group->group('/turma', function(RouteCollectorProxy $group){
             $group->post('', Turma::class . ':create');
             $group->get('', Turma::class . ':list');
+            $group->options('', Turma::class . ':options');
         });
 
         //ROTAS DE AUTENTICAÇÃO
         $group->post('/login', Usuario::class . ':login');
         $group->options('/login', Usuario::class . ':options');
         $group->post('/logoff', Usuario::class . ':logoff');
+        $group->options('/logoff', Usuario::class . ':options');
         $group->get('/check_login', Usuario::class . ':checkLogin');
+        $group->options('/check_login', Usuario::class . ':options');
     }
 }

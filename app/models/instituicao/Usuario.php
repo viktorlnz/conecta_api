@@ -46,11 +46,87 @@ class Usuario{
                 throw $th;
             }
 
+            $usuarioTipo = null;
+
+            switch($usuario['categoria_usuario']){
+                case 'ALUNO':
+                    $usuarioTipo = $dao->get(
+                        'usuario',
+                        [
+                            'id' => ['compare' => '=', 'value' => $usuario['id'], 'table' => 'usuario']
+                        ],
+                        [
+                            'aluno' => [
+                                [
+                                    'column' => 'id_usuario',
+                                    'join' => 'RIGHT JOIN'
+                                ],
+                                [
+                                    'column' => 'id'
+                                ]
+                            ]
+                        ]
+                        
+                    )[0];
+                break;
+
+                case 'PROFESSOR':
+                    $usuarioTipo = $dao->get(
+                        'usuario',
+                        [
+                            'id' => ['compare' => '=', 'value' => $usuario['id'], 'table' => 'usuario']
+                        ],
+                        [
+                            'professor' => [
+                                [
+                                    'column' => 'id_usuario',
+                                    'join' => 'RIGHT JOIN'
+                                ],
+                                [
+                                    'column' => 'id'
+                                ]
+                            ]
+                        ]
+                        
+                    )[0];
+                break;
+
+                case 'INSTITUICAO':
+                    $usuarioTipo = $dao->get(
+                        'usuario',
+                        [
+                            'id' => ['compare' => '=', 'value' => $usuario['id'], 'table' => 'usuario']
+                        ],
+                        [
+                            'instituicao' => [
+                                [
+                                    'column' => 'id_usuario',
+                                    'join' => 'RIGHT JOIN'
+                                ],
+                                [
+                                    'column' => 'id'
+                                ]
+                            ]
+                        ]
+                        
+                    )[0];
+                break;
+            }
+            $usuario = $dao->get(
+                'usuario',
+                [
+                    'usuario' => ['compare' => '=', 'value' => $this->usuario, 'next' => 'OR'],
+                    'email' => ['compare' => '=', 'value' => $this->usuario]
+                ]
+            )[0];
+
+            $_SESSION['id'] = $usuarioTipo['id'];
             $_SESSION['idUsuario'] = $usuario['id'];
             $_SESSION['categoria'] = $usuario['categoria_usuario'];
             $_SESSION['usuario'] = $usuario['usuario'];
-        
+
             return [
+                'id' => $usuarioTipo['id'],
                 'token' => $token,
                 'usuario' => $usuario['usuario'],
                 'categoria' => $usuario['categoria_usuario']
