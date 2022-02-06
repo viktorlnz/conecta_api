@@ -21,9 +21,11 @@ class Materia{
         );
     }
 
-    public static function list(){
+    public static function list(int $idInstituicao){
         $dao = new Dao();
 
-        return $dao->get('materia');
+        return $dao->get('materia',
+        [ 'id_instituicao' => ['compare' => '=', 'value' => $idInstituicao] ]
+    );
     }
 }

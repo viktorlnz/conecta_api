@@ -21,25 +21,25 @@ class InstituicaoRoutes{
 
         $group->group('/professor', function(RouteCollectorProxy $group){
             $group->post('', Professor::class . ':create');
-            $group->get('', Professor::class . ':list');
+            $group->get('/{id}', Professor::class . ':list');
             $group->options('', Professor::class . ':options');
         });
 
         $group->group('/aluno', function(RouteCollectorProxy $group){
             $group->post('', Aluno::class . ':create');
-            $group->get('', Aluno::class . ':list');
+            $group->get('/{id}', Aluno::class . ':list');
             $group->options('', Aluno::class . ':options');
         });
 
         $group->group('/materia', function(RouteCollectorProxy $group){
             $group->post('', Materia::class . ':create');
-            $group->get('', Materia::class . ':list');
+            $group->get('/{id}', Materia::class . ':list');
             $group->options('', Materia::class . ':options');
         });
 
         $group->group('/turma', function(RouteCollectorProxy $group){
             $group->post('', Turma::class . ':create');
-            $group->get('', Turma::class . ':list');
+            $group->get('/{id}', Turma::class . ':list');
             $group->options('', Turma::class . ':options');
         });
 

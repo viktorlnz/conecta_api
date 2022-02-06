@@ -65,11 +65,14 @@ class Aluno extends Usuario{
         return $this->id;
     }
 
-    public static function list(){
+    public static function list(int $idInstituicao){
         $dao = new Dao();
 
         return $dao->get(
-            'aluno'
+            'aluno',
+            [
+                'id_instituicao' => ['compare' => '=', 'value' => $idInstituicao]
+            ]
         );
     }
 }

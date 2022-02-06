@@ -175,4 +175,50 @@ class Dao{
 
         return $sql;
     }
+
+    /**
+     * Executa uma query de update no banco
+     *
+     * @param array $updateFieldsAndValues um array que contem o seguinte formato:
+     * [
+     *      'fields' => ['column1' => 'Value1', 'column2' => 'Value2'],
+     *      'where' => ['conditionColumn' => 'value']
+     * ]
+     * @return void
+     */
+    public function update( string $table , array $updateFieldsAndValues){
+        $fields = $updateFieldsAndValues['fields'];
+        $where = $updateFieldsAndValues['where'];
+
+        $updateFields = '';
+        foreach (array_keys($fields) as $field) {
+            $updateFields .= "{$field} = :{$field}, ";
+        }
+
+        $updateFields = rtrim($updateFields, ',');
+        $whereUpdate = array_keys($where);
+
+        $bind = array_merge($fields, $where);
+        $sql = sprintf('UPDATE %s SET %s WHERE %s', $table, $updateFields, "{$whereUpdate[0]} = :{$whereUpdate[0]}");
+
+
+        try {
+            $prepare = Dao::$conn->prepare($sql);
+
+            return $prepare->execute($bind);
+        } catch (\PDOException $e) {
+            var_dump($e->getMessage());
+        }
+    }
+
+    public function delete(string $table, $field, $value){
+        try {
+            $prepare = Dao::$conn->prepare("DELETE FROM $table WHERE {$field} = :{$field}");
+            $prepare->bindValue($field, $value);
+
+            return $prepare->execute();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

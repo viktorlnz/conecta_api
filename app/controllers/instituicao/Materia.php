@@ -24,8 +24,8 @@ class Materia extends Controller{
         return $res->withHeader('Content-type', 'application/json');
     }
 
-    public function list(Req $req, Res $res){
-        $materias = Model::list();
+    public function list(Req $req, Res $res, array $params){
+        $materias = Model::list($params['id']);
 
         $res->getBody()->write( json_encode($materias) );
         return $res->withHeader('Content-type', 'application/json');

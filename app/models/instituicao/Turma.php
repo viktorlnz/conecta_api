@@ -59,11 +59,12 @@ class Turma{
         }
     }
 
-    public static function list(){
+    public static function list(int $idInstituicao){
         $dao = new Dao();
     
         return $dao->get(    
-            'turma'
+            'turma',
+            ['id_instituicao' => [ 'compare' => '=', 'value' => $idInstituicao] ]
         );
     }
 }

@@ -64,8 +64,8 @@ class Turma extends Controller{
         return $res->withHeader('Content-type', 'application/json');
     }
 
-    public function list(Req $req, Res $res){
-        $turmas = Model::list();
+    public function list(Req $req, Res $res, array $params){
+        $turmas = Model::list( $params['id'] );
 
         $res->getBody()->write( json_encode($turmas) );
         return $res->withHeader('Content-type', 'application/json');

@@ -29,8 +29,8 @@ class Professor extends Controller{
         return $res->withHeader('Content-type', 'application/json');
     }
 
-    public function list(Req $req, Res $res){
-        $professores = Model::list();
+    public function list(Req $req, Res $res, array $params){
+        $professores = Model::list( $params['id'] );
 
         $res->getBody()->write( json_encode($professores) );
         return $res->withHeader('Content-type', 'application/json');
