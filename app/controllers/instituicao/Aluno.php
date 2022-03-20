@@ -36,4 +36,11 @@ class Aluno extends Controller{
         $res->getBody()->write( json_encode($alunos) );
         return $res->withHeader('Content-type', 'application/json');
     }
+
+    public function listProfessorAlunos(Req $req, Res $res, array $params){
+        $alunos = Model::listProfessorAlunos( $params['id'] );
+
+        $res->getBody()->write( json_encode($alunos) );
+        return $res->withHeader('Content-type', 'application/json');
+    }
 }

@@ -17,8 +17,8 @@ class Turma extends Controller{
         $args = $this->getArgs($req);
 
         $materiasTurma = [];
-
-        foreach ($args->materiasTurma as $materia) {
+        
+        foreach ($args['materias'] as $materia) {
             $professores = [];
 
             foreach ($materia->professores as $professor) {
@@ -38,7 +38,7 @@ class Turma extends Controller{
 
         $alunos = [];
 
-        foreach ($args->alunos as $aluno) {
+        foreach ($args['alunos'] as $aluno) {
             $a = new Aluno(
                 $aluno['id']
             );
@@ -56,7 +56,7 @@ class Turma extends Controller{
             $materiasTurma,
             $alunos
         );
-
+        
         $id = $turma->create($args['idInstituicao']);
 
         $res->getBody()->write( json_encode( $id ));

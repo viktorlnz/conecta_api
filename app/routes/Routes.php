@@ -23,6 +23,9 @@ class Routes{
 
         //SESSÃO EXERCÍCIOS
         $app->group('', new ExercicioRoutes);
+
+        //LISTAGEM DE iTENS DO PROFESSOR
+        $app->group('', new ProfessorRoutes);
     }
 
     protected function __construct(){}

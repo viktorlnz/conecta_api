@@ -75,4 +75,30 @@ class Aluno extends Usuario{
             ]
         );
     }
+
+    public static function listProfessorAlunos(int $idProfessor){
+        $dao = new Dao();
+
+        return $dao->get(
+            'aluno',
+            [
+                'id' => ['table' => 'professor', 'compare' => '=', 'value' => $idProfessor]
+            ],
+            [
+                'aluno' => [
+                    [
+                        'column' => 'id',
+                    ],
+                    'identidade',
+                    'data_nasc'
+                ],
+                'aluno_turma' => [
+                    [
+                        'column' => 'id_aluno',
+                        'join' => 'LEFT JOIN'
+                    ]
+                ]
+            ]
+        );
+    }
 }

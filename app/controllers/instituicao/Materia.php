@@ -30,4 +30,11 @@ class Materia extends Controller{
         $res->getBody()->write( json_encode($materias) );
         return $res->withHeader('Content-type', 'application/json');
     }
+
+    public function listProfessorMaterias(Req $req, Res $res, array $params){
+        $materias = Model::listProfessorMaterias($params['id']);
+
+        $res->getBody()->write( json_encode($materias) );
+        return $res->withHeader('Content-type', 'application/json');
+    }
 }

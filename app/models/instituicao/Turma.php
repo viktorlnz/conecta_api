@@ -35,7 +35,25 @@ class Turma{
             );
 
             foreach ($this->materiasTurma as $materia) {
-                $materia->create();
+                //$materia->create($this->id);
+
+                $materia->id = $dao->insert(
+                    'materia_turma',
+                    [
+                        'id_turma' => $this->id,
+                        'id_materia' => $materia->materia->id
+                    ]
+                );
+        
+                foreach ($materia->professores as $professor) {
+                    $dao->insert(
+                        'professor_materia_turma',
+                        [
+                            'id_professor' => $professor->id,
+                            'id_materia_turma' => $materia->id
+                        ]
+                    );
+                }
             }
 
             foreach ($this->alunos as $aluno) {
@@ -44,7 +62,8 @@ class Turma{
                     [
                         'id_turma' => $this->id,
                         'id_aluno' => $aluno->id
-                    ]
+                    ],
+                    false
                 );
             }
 

@@ -26,7 +26,7 @@ class Dao{
         Dao::$conn->rollBack();
     }
 
-    public function insert(string $table, array $item){
+    public function insert(string $table, array $item, bool $getLastId = true){
         $retorno = 0;
 
         $sql = 'INSERT INTO '.$table;
@@ -56,8 +56,10 @@ class Dao{
 
             $stmt->execute($c);
 
-            $retorno = Dao::$conn->lastInsertId($table.'_id_seq');
-
+            if($getLastId){
+                $retorno = Dao::$conn->lastInsertId($table.'_id_seq');
+            }
+            
         } catch (\Throwable $th) {
             throw new \Error($th->getMessage() . $sql);
         }
@@ -65,9 +67,46 @@ class Dao{
         return $retorno;
     }
 
+    public function getSql(string $sql, array $params = null){
+        $retorno = [];
+        
+
+        try {
+            $stmt = Dao::$conn->prepare($sql);
+
+            if (isset($params)) {
+                foreach ($params as $key => $where) {
+                    $stmt->bindParam(':'.$key, $where);                
+                }
+            }
+
+            $stmt->execute();
+
+            while($row = $stmt->fetch(\PDO::FETCH_ASSOC)){
+                array_push($retorno, $row);
+            }
+        } catch (\Throwable $th) {
+            throw new \Error($th->getMessage().$sql);
+        }
+
+        return $retorno;
+    }
+
+
     /**
-     * Teste
-     * @param string 
+     * @param string $table
+     * @param mixed $filter
+     * @param mixed $columns
+     * [
+     *  'coluna_teste1',
+     *  'tabela_teste' => [
+     *      'column' => 'coluna_teste'
+     *      'as' => 'outro_nome' //opcional
+     *      'join' => 'LEFT JOIN',
+     *      'from' => 'nome_da_tabela',
+     *      
+     *  ]
+     * ]
      */
     public function get(string $table, array | null $filter = null, array | null $columns = null){
         $retorno = [];
@@ -110,12 +149,26 @@ class Dao{
         return $retorno;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $columns 
+     * [
+     *  'coluna_teste1',
+     *  'tabela_teste' => [
+     *      'column' => 'coluna_teste'
+     *      'as' => 'outro_nome' //opcional
+     *  ]
+     * ]
+     * @return string
+     */
     private function mountSelectColumns(array $columns):string{
         $sql = '';
         $rows = [];
 
+        //['tabela_teste' => 'teste', []]
         foreach ($columns as $key => $column) {
-            if(is_array($column)){
+            if(is_array($column)){ //formato: 'tabela' => []
 
                 foreach ($column as $c) {
                     $str = $key . '.' . $c['column'] . (isset($c['as']) ? ' AS '.$c['as'] : '');
@@ -123,7 +176,7 @@ class Dao{
                 }
                 
             }
-            else{
+            else{ // apenas coluna ['teste', 'teste2']
                 array_push($rows, $column);
             }
         }
@@ -135,6 +188,23 @@ class Dao{
         return $sql;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $table nome da tabela a fazer join
+     * @param array $columns
+     * [
+     *  'coluna_teste1',
+     *  'tabela_teste' => [
+     *      'column' => 'coluna_teste'
+     *      'as' => 'outro_nome' //opcional
+     *      'join' => 'LEFT JOIN',
+     *      'from' => 'nome_da_tabela',
+     *      
+     *  ]
+     * ]
+     * @return string
+     */
     private function mountJoins(string $table, array $columns):string{
         $sql = '';
         $joins = [];

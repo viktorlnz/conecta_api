@@ -12,6 +12,7 @@ class MateriaTurma{
     ){}
 
     public function create(int $idTurma){
+        
         $dao = new Dao();
 
         $this->id = $dao->insert(
