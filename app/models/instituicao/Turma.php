@@ -46,12 +46,14 @@ class Turma{
                 );
         
                 foreach ($materia->professores as $professor) {
+                    
                     $dao->insert(
                         'professor_materia_turma',
                         [
                             'id_professor' => $professor->id,
                             'id_materia_turma' => $materia->id
-                        ]
+                        ],
+                        false
                     );
                 }
             }

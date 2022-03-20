@@ -19,9 +19,11 @@ class Turma extends Controller{
         $materiasTurma = [];
         
         foreach ($args['materias'] as $materia) {
+            
             $professores = [];
 
-            foreach ($materia->professores as $professor) {
+            foreach ($materia['professores'] as $professor) { 
+            
                 $p = new Professor($professor['id']);
                 
                 array_push($professores, $p);

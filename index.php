@@ -12,6 +12,9 @@ use Slim\Exception\HttpNotFoundException;
 use Slim\Factory\AppFactory;
 use Slim\Routing\RouteContext;
 
+//Access-Control-Allow-Origin header with wildcard.
+header('Access-Control-Allow-Origin: *');
+
 $app = AppFactory::create();
 
 
