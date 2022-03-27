@@ -79,26 +79,14 @@ class Aluno extends Usuario{
     public static function listProfessorAlunos(int $idProfessor){
         $dao = new Dao();
 
-        return $dao->get(
-            'aluno',
-            [
-                'id' => ['table' => 'professor', 'compare' => '=', 'value' => $idProfessor]
-            ],
-            [
-                'aluno' => [
-                    [
-                        'column' => 'id',
-                    ],
-                    'identidade',
-                    'data_nasc'
-                ],
-                'aluno_turma' => [
-                    [
-                        'column' => 'id_aluno',
-                        'join' => 'LEFT JOIN'
-                    ]
-                ]
-            ]
-        );
+        return $dao->getSql('
+        SELECT DISTINCT aluno.nome, aluno.id, aluno.data_nasc, aluno.identidade FROM aluno
+	    JOIN aluno_turma ON aluno.id = aluno_turma.id_aluno
+		JOIN turma ON aluno_turma.id_turma = turma.id
+	    JOIN materia_turma ON turma.id = materia_turma.id_turma
+		JOIN professor_materia_turma ON materia_turma.id = professor_materia_turma.id_materia_turma
+        WHERE professor_materia_turma.id_professor = :id
+        ', ['id' => $idProfessor]);
+
     }
 }

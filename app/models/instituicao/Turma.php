@@ -88,4 +88,16 @@ class Turma{
             ['id_instituicao' => [ 'compare' => '=', 'value' => $idInstituicao] ]
         );
     }
+
+    public static function listProfessorTurmas(int $idProfessor){
+        $dao = new Dao();
+
+        return $dao->getSql('
+        SELECT DISTINCT turma.nome, turma.id, turma.periodo, turma.data_inicio, turma.duracao_mes FROM turma
+	    JOIN materia_turma ON turma.id = materia_turma.id_turma
+		JOIN professor_materia_turma ON materia_turma.id = professor_materia_turma.id_materia_turma
+        WHERE professor_materia_turma.id_professor = :id
+        ', ['id' => $idProfessor]);
+
+    }
 }
