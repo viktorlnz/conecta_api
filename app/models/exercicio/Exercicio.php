@@ -10,31 +10,40 @@ class Exercicio{
 
     public function __construct(
         public int $id = 0,
+        public string $titulo = '',
         public string $desc = '',
         public string $categoria = '',
+        public string $respostaCerta = '',
         public ?Professor $professor = null,
-        public ?Materia $materia = null
+        public ?Materia $materia = null,
+        public array $exerciciosAlternativa = []
     ){}
 
     public function create(){
         $dao = new Dao();
 
         try {
-            $dao->beginTransaction();
+            //$dao->beginTransaction();
 
             $this->id = $dao->insert(
                 'exercicio',
                 [
                     'id_professor' => $this->professor->id,
                     'id_materia' => $this->materia->id,
+                    'resposta_certa' => $this->respostaCerta,
+                    'titulo' => $this->titulo,
                     '"desc"' => $this->desc,
                     'categoria' => $this->categoria
                 ]
             );
 
-            $dao->commit();
+            foreach ($this->exerciciosAlternativa as $alternativa) {
+                $alternativa->create($this->id);
+            }
+
+            //$dao->commit();
         } catch (\Throwable $th) {
-            $dao->rollback();
+            //$dao->rollback();
 
             throw $th;
         }

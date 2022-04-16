@@ -10,11 +10,13 @@ class ExercicioSubmissao extends Exercicio{
     public function __construct(
         public ?string $correcao = null,
         int $id = 0,
+        string $titulo = '',
         string $desc = '',
         string $categoria = '',
+        string $respostaCerta = '',
         ?Professor $professor = null,
         ?Materia $materia = null
     ){
-        parent::__construct($id, $desc, $categoria, $professor, $materia);
+        parent::__construct($id, $titulo, $desc, $categoria, $respostaCerta, $professor, $materia);
     }
 }
