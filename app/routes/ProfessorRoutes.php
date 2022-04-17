@@ -12,11 +12,11 @@ class ProfessorRoutes{
 
         $group->group('/list/professor', function(RouteCollectorProxy $group){
             $group->get('/aluno/{id}', Aluno::class . ':listProfessorAlunos');
-            $group->options('/aluno', Aluno::class . ':options');
+            $group->options('/aluno/{id}', Aluno::class . ':options');
             $group->get('/materia/{id}', Materia::class . ':listProfessorMaterias');
-            $group->options('/materia', Materia::class . ':options');
+            $group->options('/materia/{id}', Materia::class . ':options');
             $group->get('/turma/{id}', Turma::class . ':listProfessorTurmas');
-            $group->options('/turma', Turma::class . ':options');
+            $group->options('/turma/{id}', Turma::class . ':options');
         });
     }
 }
