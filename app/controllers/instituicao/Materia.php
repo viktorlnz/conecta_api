@@ -37,4 +37,11 @@ class Materia extends Controller{
         $res->getBody()->write( json_encode($materias) );
         return $res->withHeader('Content-type', 'application/json');
     }
+
+    public function listTurmaMaterias(Req $req, Res $res, array $params){
+        $materias = Model::listTurmaMaterias($params['id']);
+
+        $res->getBody()->write( json_encode($materias) );
+        return $res->withHeader('Content-type', 'application/json');
+    }
 }

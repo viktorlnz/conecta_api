@@ -58,4 +58,13 @@ class Exercicio{
             'exercicio'
         );
     }
+
+    public static function getExerciciosMateria(int $idMateria, int $idProfessor){
+        $dao = new Dao();
+
+        return $dao->getSql('
+        SELECT id, titulo, "desc" FROM exercicio
+        WHERE id_materia = :id AND id_professor = '.$idProfessor.'
+        ', ['id' => $idMateria]);
+    }
 }

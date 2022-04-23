@@ -70,7 +70,6 @@ class Dao{
     public function getSql(string $sql, array $params = null){
         $retorno = [];
         
-
         try {
             $stmt = Dao::$conn->prepare($sql);
 

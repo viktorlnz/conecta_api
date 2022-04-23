@@ -41,4 +41,15 @@ class Materia{
 
         
     }
+
+    public static function listTurmaMaterias(int $idTurma){
+        $dao = new Dao();
+
+        return $dao->getSql('
+        SELECT materia.id, materia.nome FROM materia_turma
+        JOIN materia ON materia.id = materia_turma.id_materia
+        WHERE id_turma = :id
+        ', ['id' => $idTurma]);
+
+    }
 }

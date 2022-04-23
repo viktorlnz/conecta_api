@@ -47,4 +47,11 @@ class Exercicio extends Controller{
         $res->getBody()->write( json_encode($exercicios) );
         return $res->withHeader('Content-type', 'application/json');
     }
+
+    public function getExerciciosMateria(Req $req, Res $res, array $params){
+        $exercicios = Model::getExerciciosMateria($params['id'], $params['idProfessor']);
+
+        $res->getBody()->write( json_encode($exercicios) );
+        return $res->withHeader('Content-type', 'application/json');
+    }
 }
