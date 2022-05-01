@@ -4,6 +4,8 @@ namespace app\models\exercicio;
 
 use app\daos\Dao;
 use app\models\instituicao\Materia;
+use app\models\instituicao\MateriaTurma;
+use app\models\instituicao\Professor;
 use app\models\instituicao\Turma;
 
 class Tarefa{
@@ -15,8 +17,8 @@ class Tarefa{
         public float $pontos = 0.0,
         public ?string $dtComeco = null,
         public ?string $dtFim = null,
-        public ?Materia $materia = null,
-        public ?Turma $turma = null,
+        public ?MateriaTurma $materiaTurma = null,
+        public ?Professor $professor = null,
         public array $exercicios = []
     ){}
 
@@ -25,11 +27,11 @@ class Tarefa{
 
         try {
             $dao->beginTransaction();
-
+            
             $this->id = $dao->insert(
                 'tarefa',
                 [
-                    'id_materia_turma' => $idMateriaTurma,
+                    'id_professor' => $this->professor->id,
                     'titulo' => $this->titulo,
                     '"desc"' => $this->desc,
                     'pontos' => $this->pontos,
@@ -37,6 +39,18 @@ class Tarefa{
                     'dt_fim' => $this->dtFim
                 ]
             );
+
+            foreach ($this->exercicios as $exercicio) {
+        
+                $dao->insert('exercicio_tarefa', 
+                [
+                    'id_exercicio' => $exercicio->id,
+                    'id_tarefa' => $this->id,
+                    'numerador' => $exercicio->numerador,
+                    'pontos' => $exercicio->pontos
+                ]
+                , false);
+            }
 
             $dao->commit();
         } catch (\Throwable $th) {

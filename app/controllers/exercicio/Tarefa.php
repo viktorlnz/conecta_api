@@ -3,9 +3,11 @@
 namespace app\controllers\exercicio;
 
 use app\controllers\Controller;
-
+use app\models\exercicio\Exercicio;
+use app\models\exercicio\ExercicioTarefa;
 use app\models\exercicio\Tarefa as Model;
 use app\models\instituicao\Materia;
+use app\models\instituicao\MateriaTurma;
 use app\models\instituicao\Professor;
 use Psr\Http\Message\ServerRequestInterface as Req;
 use Psr\Http\Message\ResponseInterface as Res;
@@ -21,8 +23,27 @@ class Tarefa extends Controller{
             $args['desc'],
             $args['pontos'],
             $args['dtComeco'],
-            $args['dtFim']
+            $args['dtFim'],
+            new MateriaTurma($args['idMateriaTurma']),
+            new Professor($args['idProfessor'])
         );
+
+        $tarefa->professor->id = $tarefa
+            ->professor
+            ->getProfessorMateriaId($tarefa->materiaTurma->id);
+
+        $exercicios = [];
+
+        foreach ($args['exercicios'] as $key => $exercicio) {
+            $e = new ExercicioTarefa(
+                $exercicio['numerador'], $exercicio['pontos'], 
+                $exercicio['id'], '', '', ''
+            );
+
+            array_push($exercicios, $e);
+        }
+
+        $tarefa->exercicios = $exercicios;
 
         $idMateriaTurma = $args['idMateriaTurma'];
 

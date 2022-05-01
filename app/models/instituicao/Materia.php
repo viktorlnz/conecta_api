@@ -46,7 +46,7 @@ class Materia{
         $dao = new Dao();
 
         return $dao->getSql('
-        SELECT materia.id, materia.nome FROM materia_turma
+        SELECT materia.id, materia.nome, materia_turma.id as materia_turma_id FROM materia_turma
         JOIN materia ON materia.id = materia_turma.id_materia
         WHERE id_turma = :id
         ', ['id' => $idTurma]);

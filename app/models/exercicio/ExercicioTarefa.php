@@ -11,11 +11,12 @@ class ExercicioTarefa extends Exercicio{
         public int $numerador = 0,
         public float $pontos = 0.0,
         int $id = 0,
+        string $titulo = '',
         string $desc = '',
         string $categoria = '',
         ?Professor $professor = null,
         ?Materia $materia = null
     ){
-        parent::__construct($id, $desc, $categoria, $professor, $materia);
+        parent::__construct($id, $titulo, $desc, $categoria, '', $professor, $materia);
     }
 }

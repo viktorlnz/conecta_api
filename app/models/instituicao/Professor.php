@@ -72,4 +72,15 @@ class Professor extends Usuario{
             ]
         );
     }
+
+    public function getProfessorMateriaId(int $idMateriaTurma){
+        $dao = new Dao();
+
+        $ret = $dao->getSql(
+            'SELECT id FROM professor_materia_turma WHERE id_professor = '.$this->id.
+            ' AND id_materia_turma = '.$idMateriaTurma
+        )[0]['id'];
+
+        return $ret;
+    }
 }
