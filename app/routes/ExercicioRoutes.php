@@ -23,6 +23,10 @@ class ExercicioRoutes{
         $group->group('/tarefa', function(RouteCollectorProxy $group){
             $group->post('', Tarefa::class . ':create');
             $group->options('', Tarefa::class . ':options');
+
+            $group->get('/aluno/{id}/get', Tarefa::class . ':listAlunoTarefas');
+            $group->options('/aluno/{id}/get', Tarefa::class . ':options');
+            
         });
 
         $group->get('/turma/materia/{id}', Materia::class . ':listTurmaMaterias');

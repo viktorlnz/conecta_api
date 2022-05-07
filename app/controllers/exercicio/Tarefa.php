@@ -60,4 +60,12 @@ class Tarefa extends Controller{
         $res->getBody()->write( json_encode($tarefas) );
         return $res->withHeader('Content-type', 'application/json');
     }
+
+    public function listAlunoTarefas(Req $req, Res $res, array $args){
+        $tarefas = Model::listAlunoTarefas($args['id']);
+
+        $res->getBody()->write(json_encode($tarefas));
+
+        return $res->withHeader('Content-type', 'application/json');
+    }
 }
