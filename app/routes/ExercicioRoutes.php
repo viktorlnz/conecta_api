@@ -27,6 +27,8 @@ class ExercicioRoutes{
             $group->get('/aluno/{id}/get', Tarefa::class . ':listAlunoTarefas');
             $group->options('/aluno/{id}/get', Tarefa::class . ':options');
             
+            $group->get('/aluno/{id}/get_atuais', Tarefa::class . ':listAlunoTarefasAtuais');
+            $group->options('/aluno/{id}/get_atuais', Tarefa::class . ':options');
         });
 
         $group->get('/turma/materia/{id}', Materia::class . ':listTurmaMaterias');
