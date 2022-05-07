@@ -94,7 +94,7 @@ class Tarefa{
 
         return $dao->getSql(
             'SELECT tarefa.id, tarefa.titulo, tarefa.pontos, tarefa.dt_fim, 
-            professor_materia_turma.id_professor AS id_professor,
+            professor_materia_turma.id_professor AS id_professor, tarefa.desc,
             materia.id AS id_materia, materia.nome AS materia FROM tarefa
             LEFT JOIN professor_materia_turma ON tarefa.id_professor = professor_materia_turma.id
             LEFT JOIN materia_turma ON professor_materia_turma.id_materia_turma = materia_turma.id
