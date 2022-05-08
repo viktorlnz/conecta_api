@@ -54,6 +54,15 @@ class Tarefa extends Controller{
         return $res->withHeader('Content-type', 'application/json');
     }
 
+    public function get(Req $req, Res $res, array $args){
+        $tarefa = new Model($args['id']);
+
+        $tarefa = $tarefa->get();
+
+        $res->getBody()->write(json_encode($tarefa));
+        return $res->withHeader('Content-type', 'application/json');
+    }
+
     public function list(Req $req, Res $res){
         $tarefas = Model::list();
 

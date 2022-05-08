@@ -62,6 +62,58 @@ class Tarefa{
         return $this->id;
     }
 
+    public function get(){
+        $dao = new Dao();
+
+        $res = $dao->getSql(
+            'SELECT tarefa.titulo, tarefa.desc, tarefa.pontos, tarefa.dt_comeco, 
+            tarefa.dt_fim, professor.id AS id_professor, professor.nome FROM tarefa
+            LEFT JOIN professor_materia_turma ON tarefa.id_professor = professor_materia_turma.id
+            LEFT JOIN professor ON professor_materia_turma.id_professor = professor.id
+            WHERE tarefa.id = :id',
+            ['id' => $this->id]
+        )[0];
+
+        $this->titulo = $res['titulo'];
+        $this->desc = $res['desc'];
+        $this->pontos = $res['pontos'];
+        $this->dtComeco = $res['dt_comeco'];
+        $this->dtFim = $res['dt_fim'];
+
+        $this->professor = new Professor($res['id_professor'], $res['nome']);
+
+        $res = $dao->getSql(
+            'SELECT "id", "desc", categoria, titulo from exercicio
+            inner join exercicio_tarefa ON exercicio.id = exercicio_tarefa.id_exercicio
+            WHERE exercicio_tarefa.id_tarefa = :id',
+            ['id' => $this->id]
+        );
+
+        foreach ($res as $e) {
+            $exercicio = new Exercicio(
+                $e['id'], $e['titulo'], $e['desc'], $e['categoria'],
+                '', null, null, []
+            );
+
+            if($e['categoria'] === 'ALTERNATIVA'){
+                $alt = $dao->getSql(
+                    'SELECT * from exercicio_alternativa
+                    WHERE id_exercicio = :id',
+                    ['id' => $e['id']]
+                );
+
+                foreach($alt as $a){
+                    $alternativa = new ExercicioAlternativa($a['id'], $a['resposta'], $a['numerador']);
+                    array_push($exercicio->exerciciosAlternativa, $alternativa);
+                }
+            }
+
+            array_push($this->exercicios, $exercicio);
+        }
+
+        return $this;
+    }
+
     public static function list(){
         $dao = new Dao();
 

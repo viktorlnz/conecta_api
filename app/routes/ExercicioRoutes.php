@@ -24,11 +24,15 @@ class ExercicioRoutes{
             $group->post('', Tarefa::class . ':create');
             $group->options('', Tarefa::class . ':options');
 
+            $group->get('/get/{id}', Tarefa::class . ':get');
+            $group->options('/get/{id}', Tarefa::class . ':options');
+
             $group->get('/aluno/{id}/get', Tarefa::class . ':listAlunoTarefas');
             $group->options('/aluno/{id}/get', Tarefa::class . ':options');
             
             $group->get('/aluno/{id}/get_atuais', Tarefa::class . ':listAlunoTarefasAtuais');
             $group->options('/aluno/{id}/get_atuais', Tarefa::class . ':options');
+
         });
 
         $group->get('/turma/materia/{id}', Materia::class . ':listTurmaMaterias');
