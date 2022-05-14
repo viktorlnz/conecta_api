@@ -24,6 +24,9 @@ class ExercicioRoutes{
             $group->post('', Tarefa::class . ':create');
             $group->options('', Tarefa::class . ':options');
 
+            $group->post('/submissao', Tarefa::class . ':submissao');
+            $group->options('/submissao', Tarefa::class . ':options');
+
             $group->get('/get/{id}', Tarefa::class . ':get');
             $group->options('/get/{id}', Tarefa::class . ':options');
 

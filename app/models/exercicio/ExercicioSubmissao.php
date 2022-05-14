@@ -9,6 +9,7 @@ class ExercicioSubmissao extends Exercicio{
 
     public function __construct(
         public ?string $correcao = null,
+        public string $resposta = '',
         int $id = 0,
         string $titulo = '',
         string $desc = '',

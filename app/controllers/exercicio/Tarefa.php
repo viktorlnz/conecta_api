@@ -4,8 +4,11 @@ namespace app\controllers\exercicio;
 
 use app\controllers\Controller;
 use app\models\exercicio\Exercicio;
+use app\models\exercicio\ExercicioSubmissao;
 use app\models\exercicio\ExercicioTarefa;
 use app\models\exercicio\Tarefa as Model;
+use app\models\exercicio\TarefaSubmissao;
+use app\models\instituicao\Aluno;
 use app\models\instituicao\Materia;
 use app\models\instituicao\MateriaTurma;
 use app\models\instituicao\Professor;
@@ -50,6 +53,28 @@ class Tarefa extends Controller{
         $id = $tarefa->create($idMateriaTurma);
 
         $res->getBody()->write( json_encode( $id ));
+
+        return $res->withHeader('Content-type', 'application/json');
+    }
+
+    public function submissao(Req $req, Res $res){
+        $args = $req->getParsedBody();
+
+        $tarefa = new TarefaSubmissao(
+            $args['dtInicio'], $args['dtSubmissao'], $args['id'],
+            '', '', 0, null, null, null, null,
+            new Aluno($args['idAluno'])
+        );
+
+        foreach($args['exercicios'] as $e){
+            $e = new ExercicioSubmissao(null, $e['resposta'], $e['id']);
+
+            array_push($tarefa->exercicios, $e);
+        }
+
+        $tarefa->submissao();
+
+        $res->getBody()->write( json_encode( true ));
 
         return $res->withHeader('Content-type', 'application/json');
     }

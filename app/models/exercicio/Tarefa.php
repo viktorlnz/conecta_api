@@ -154,6 +154,8 @@ class Tarefa{
             LEFT JOIN aluno_turma ON turma.id = aluno_turma.id_turma
             JOIN materia ON materia_turma.id_materia = materia.id
             WHERE aluno_turma.id_aluno = :id AND dt_fim > CURRENT_TIMESTAMP
+            AND CURRENT_TIMESTAMP > dt_comeco
+            AND tarefa.id NOT IN (SELECT id_tarefa FROM tarefa_submissao WHERE id_aluno = :id)
             ORDER BY tarefa.dt_fim ASC',
             [
                 'id' => $id
