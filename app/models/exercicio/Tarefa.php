@@ -168,10 +168,12 @@ class Tarefa{
         
         return $dao->getSql(
             'SELECT tarefa.id, tarefa.titulo, tarefa_submissao.id_tarefa,
-            tarefa_submissao.id_aluno, aluno.nome, tarefa_submissao.dt_submissao FROM tarefa
+            tarefa_submissao.id_aluno, aluno.nome, tarefa_submissao.dt_submissao 
+            FROM tarefa
             RIGHT JOIN tarefa_submissao ON tarefa.id = tarefa_submissao.id_tarefa
             LEFT JOIN aluno ON tarefa_submissao.id_aluno = aluno.id
-            WHERE tarefa.id_professor = :id',
+            LEFT JOIN professor_materia_turma ON tarefa.id_professor = professor_materia_turma.id
+            WHERE professor_materia_turma.id_professor = :id',
             [
                 'id' => $idProfessor
             ]

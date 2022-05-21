@@ -1,0 +1,13 @@
+SELECT * FROM aluno;
+
+SELECT nome FROM aluno;
+
+SELECT COUNT(nome) FROM aluno;
+
+SELECT DISTINCT nome FROM aluno;
+
+INSERT INTO aluno(id, id_instituicao, nome, identidade, data_nasc, id_usuario)
+VALUES (4,9,'Maria',22395247, '1998-04-09', 9)
+
+SELECT * FROM aluno
+WHERE data_nasc = '1998-04-09';
