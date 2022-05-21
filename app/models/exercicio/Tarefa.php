@@ -162,4 +162,19 @@ class Tarefa{
             ]
         );
     }
+
+    public static function listTarefasConcluidas(int $idProfessor){
+        $dao = new Dao();
+        
+        return $dao->getSql(
+            'SELECT tarefa.id, tarefa.titulo, tarefa_submissao.id_tarefa,
+            tarefa_submissao.id_aluno, aluno.nome, tarefa_submissao.dt_submissao FROM tarefa
+            RIGHT JOIN tarefa_submissao ON tarefa.id = tarefa_submissao.id_tarefa
+            LEFT JOIN aluno ON tarefa_submissao.id_aluno = aluno.id
+            WHERE tarefa.id_professor = :id',
+            [
+                'id' => $idProfessor
+            ]
+        );
+    }
 }
