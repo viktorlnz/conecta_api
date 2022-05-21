@@ -69,4 +69,76 @@ class TarefaSubmissao extends Tarefa{
             throw $th;
         }
     }
+
+    public function get(){
+        $dao = new Dao();
+
+        $t = $dao->getSql(
+            'SELECT dt_submissao, tarefa.titulo, tarefa.desc,
+            tarefa.pontos, aluno.id AS id_aluno, aluno.nome FROM tarefa_submissao
+            LEFT JOIN tarefa ON tarefa_submissao.id_tarefa = tarefa.id
+            LEFT JOIN aluno ON tarefa_submissao.id_aluno = aluno.id
+            WHERE tarefa_submissao.id = :id',
+            ['id' => $this->id]
+        );
+
+        //caso não haja tarefa retornada
+        if(sizeof($t) === 0){
+            return null;
+        }
+
+        $t = $t[0];
+
+        $this->dtSubmissao = $t['dt_submissao'];
+        $this->titulo = $t['titulo'];
+        $this->desc = $t['desc'];
+        $this->pontos = $t['pontos'];
+
+        $this->aluno = new Aluno($t['id_aluno'], $t['nome']);
+
+
+        $exercicios = $dao->getSql(
+            'SELECT id_exercicio, resposta, "desc", categoria, titulo FROM exercicio_submissao
+            LEFT JOIN exercicio ON exercicio_submissao.id_exercicio = exercicio.id
+            WHERE id_tarefa_submissao = :id',
+            [
+                'id' => $this->id
+            ]
+        );
+        
+        foreach ($exercicios as $e) {
+            $ex = new ExercicioSubmissao(
+                null,
+                $e['resposta'],
+                $e['id_exercicio'],
+                $e['titulo'],
+                $e['desc'],
+                $e['categoria']
+            );
+
+            if($ex->categoria === 'ALTERNATIVA'){
+                $alts = $dao->getSql(
+                    'SELECT * FROM exercicio_alternativa
+                    WHERE id_exercicio = :id',
+                    [
+                        'id' => $ex->id
+                    ]
+                );
+
+                $alternativas = [];
+
+                foreach ($alts as $alt) {
+                    $alternativa = new ExercicioAlternativa($alt['id'], $alt['resposta'], $alt['numerador']);
+
+                    array_push($alternativas, $alternativa);
+                }
+
+                $ex->exerciciosAlternativa = $alternativas;
+            }
+
+            array_push($this->exercicios, $ex);
+        }
+
+        return $this;
+    }
 }

@@ -4,6 +4,7 @@ namespace app\routes;
 
 use app\controllers\exercicio\Exercicio;
 use app\controllers\exercicio\Tarefa;
+use app\controllers\exercicio\TarefaSubmissao;
 use app\controllers\instituicao\Materia;
 use Slim\Routing\RouteCollectorProxy;
 
@@ -39,6 +40,8 @@ class ExercicioRoutes{
             $group->get('/listar/concluidas/{idProfessor}', Tarefa::class . ':listTarefasConcluidas');
             $group->options('/listar/concluidas/{idProfessor}', Tarefa::class . ':options');
 
+            $group->get('/submissao/{idSubmissao}', TarefaSubmissao::class . ':get');
+            $group->options('/submissao/{idSubmissao}', TarefaSubmissao::class . ':options');
         });
 
         $group->get('/turma/materia/{id}', Materia::class . ':listTurmaMaterias');
