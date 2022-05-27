@@ -26,6 +26,25 @@ class Dao{
         Dao::$conn->rollBack();
     }
 
+    public function execSql(string $sql, array $params = null){
+        
+        try {
+            $stmt = Dao::$conn->prepare($sql);
+
+            if (isset($params)) {
+                foreach ($params as $key => $where) {
+                    $stmt->bindParam(':'.$key, $where);                
+                }
+            }
+
+            $stmt->execute();
+
+        } catch (\Throwable $th) {
+            throw new \Error($th->getMessage().$sql);
+        }
+
+    }
+
     public function insert(string $table, array $item, bool $getLastId = true){
         $retorno = 0;
 

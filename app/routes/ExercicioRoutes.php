@@ -42,6 +42,9 @@ class ExercicioRoutes{
 
             $group->get('/submissao/{idSubmissao}', TarefaSubmissao::class . ':get');
             $group->options('/submissao/{idSubmissao}', TarefaSubmissao::class . ':options');
+
+            $group->put('/correcao', TarefaSubmissao::class . ':corrigir');
+            $group->options('/correcao', TarefaSubmissao::class . ':options');
         });
 
         $group->get('/turma/materia/{id}', Materia::class . ':listTurmaMaterias');

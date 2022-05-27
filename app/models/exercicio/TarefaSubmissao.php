@@ -141,4 +141,19 @@ class TarefaSubmissao extends Tarefa{
 
         return $this;
     }
+
+    public function corrigir(){
+        $dao = new Dao();
+
+        foreach ($this->exercicios as $exercicio) {
+            $dao->execSql(
+                'UPDATE exercicio_submissao SET correcao = :correcao
+                WHERE id_exercicio = '.$exercicio->id.' AND id_tarefa_submissao = '.$this->id,
+                [
+                    'correcao' => $exercicio->correcao
+                ]
+            );
+
+        }
+    }
 }

@@ -174,7 +174,8 @@ class Tarefa{
             RIGHT JOIN tarefa_submissao ON tarefa.id = tarefa_submissao.id_tarefa
             LEFT JOIN aluno ON tarefa_submissao.id_aluno = aluno.id
             LEFT JOIN professor_materia_turma ON tarefa.id_professor = professor_materia_turma.id
-            WHERE professor_materia_turma.id_professor = :id',
+            WHERE professor_materia_turma.id_professor = :id
+            AND tarefa_submissao.id NOT IN (SELECT DISTINCT id_tarefa_submissao FROM exercicio_submissao WHERE correcao is not null)',
             [
                 'id' => $idProfessor
             ]
