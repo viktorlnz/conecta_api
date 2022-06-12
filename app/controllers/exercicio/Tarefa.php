@@ -112,6 +112,15 @@ class Tarefa extends Controller{
         return $res->withHeader('Content-type', 'application/json');
     }
 
+    public function listTarefasTotais(Req $req, Res $res, array $args){
+        $idProfessor = $args['idProfessor'];
+
+        $tarefas = Model::listTarefasTotais($idProfessor);
+
+        $res->getBody()->write(json_encode($tarefas));
+        return $res->withHeader('Content-type', 'application/json');
+    }
+
     public function listAlunoTarefasAtuais(Req $req, Res $res, array $args){
         $tarefas = Model::listAlunoTarefasAtuais($args['id']);
 

@@ -181,4 +181,21 @@ class Tarefa{
             ]
         );
     }
+
+    public static function listTarefasTotais(int $idProfessor){
+        $dao = new Dao();
+        
+        return $dao->getSql(
+            'SELECT tarefa.id, tarefa.titulo, tarefa.dt_comeco, 
+            tarefa.dt_fim, materia_turma.id_materia, materia.nome as materia 
+            FROM tarefa
+            LEFT JOIN professor_materia_turma ON tarefa.id_professor = professor_materia_turma.id
+            left join materia_turma ON professor_materia_turma.id_materia_turma = materia_turma.id
+            left join materia ON materia_turma.id_materia = materia.id
+            WHERE professor_materia_turma.id_professor = :id',
+            [
+                'id' => $idProfessor
+            ]
+        );
+    }
 }

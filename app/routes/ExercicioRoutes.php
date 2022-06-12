@@ -14,7 +14,7 @@ class ExercicioRoutes{
         $group->group('/exercicio', function(RouteCollectorProxy $group){
 
             $group->post('', Exercicio::class . ':create');
-            $group->get('', Exercicio::class . ':list');
+            $group->get('/{idProfessor}', Exercicio::class . ':list');
             $group->options('', Exercicio::class . ':options');
 
             $group->get('/materia/{id}/professor/{idProfessor}', Exercicio::class . ':getExerciciosMateria');
@@ -39,6 +39,9 @@ class ExercicioRoutes{
 
             $group->get('/listar/concluidas/{idProfessor}', Tarefa::class . ':listTarefasConcluidas');
             $group->options('/listar/concluidas/{idProfessor}', Tarefa::class . ':options');
+
+            $group->get('/listar/totais/{idProfessor}', Tarefa::class . ':listTarefasTotais');
+            $group->options('/listar/totais/{idProfessor}', Tarefa::class . ':options');
 
             $group->get('/submissao/{idSubmissao}', TarefaSubmissao::class . ':get');
             $group->options('/submissao/{idSubmissao}', TarefaSubmissao::class . ':options');

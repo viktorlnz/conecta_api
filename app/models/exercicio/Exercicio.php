@@ -51,11 +51,14 @@ class Exercicio{
         return $this->id;
     }
 
-    public static function list(){
+    public static function list(int $idProfessor){
         $dao = new Dao();
 
-        return $dao->get(
-            'exercicio'
+        return $dao->getSql(
+            'SELECT exercicio.id, id_materia, titulo, nome as materia FROM exercicio 
+            LEFT JOIN materia ON exercicio.id_materia = materia.id
+            WHERE id_professor = :id',
+            ['id' => $idProfessor]
         );
     }
 

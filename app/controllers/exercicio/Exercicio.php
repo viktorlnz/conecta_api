@@ -41,8 +41,10 @@ class Exercicio extends Controller{
         return $res->withHeader('Content-type', 'application/json');
     }
 
-    public function list(Req $req, Res $res){
-        $exercicios = Model::list();
+    public function list(Req $req, Res $res, array $params){
+        $idProfessor = $params['idProfessor'];
+
+        $exercicios = Model::list($idProfessor);
 
         $res->getBody()->write( json_encode($exercicios) );
         return $res->withHeader('Content-type', 'application/json');
